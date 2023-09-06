@@ -13,7 +13,7 @@ public class AppoinmentService {
 	
 	private static AppoinmentService appoinmentServiceObj;
 
-	private AppoinmentService() {
+	public AppoinmentService() {
 		// TODO Auto-generated constructor stub
 	}
 	

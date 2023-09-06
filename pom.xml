@@ -40,7 +40,28 @@
     <artifactId>standard</artifactId>
     <version>1.1.2</version>
   </dependency>
+  
+  <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>5.10.0</version>
+    <scope>test</scope>
     
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+  <dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.8.0</version>
+    <scope>test</scope>
+    
+  </dependency>
+    
+  <dependency>
+  	<groupId>com.codewithlak.mavenbatch16</groupId>
+  	<artifactId>sample-maven-for-batch16</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
   </dependencies>
 
   <build>
