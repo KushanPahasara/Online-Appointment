@@ -6,7 +6,7 @@ public class User {
 	private String user_name;
 	private String user_password;
 	private String user_email;
-	private int role;
+	private int user_role;
 	private int tel_number;
 	
 	
@@ -15,13 +15,13 @@ public class User {
 	}
 
 
-	public User(int user_id, String user_name, String user_password, String user_email, int role, int tel_number) {
+	public User(int user_id, String user_name, String user_password, String user_email, int user_role, int tel_number) {
 		super();
 		this.user_id = user_id;
 		this.user_name = user_name;
 		this.user_password = user_password;
 		this.user_email = user_email;
-		this.role = role;
+		this.user_role = user_role;
 		this.tel_number = tel_number;
 	}
 
@@ -61,12 +61,12 @@ public class User {
 	}
 	
 	public void setUser_role(int role) {
-		this.role = role;
+		this.user_role = role;
 	}
 
 
 	public int getUser_role() {
-		return role;
+		return user_role;
 	}
 
 

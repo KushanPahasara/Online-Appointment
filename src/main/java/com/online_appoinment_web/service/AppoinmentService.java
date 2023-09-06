@@ -53,5 +53,13 @@ public class AppoinmentService {
 	public List<Appoinment> fetchAllAppoinmentUser(int user_id) throws ClassNotFoundException, SQLException{
 		return getAppoinmentManager().fetchAllAppoinmentUser(user_id);
 	}
+	
+	public boolean addAppoinmentAdmin(Appoinment appoinment) throws ClassNotFoundException, SQLException {
+		return getAppoinmentManager().addAppoinmentAdmin(appoinment);
+	}
+	
+	public boolean editAppoinmentAdmin(Appoinment appoinment) throws ClassNotFoundException, SQLException {
+		return getAppoinmentManager().editAppoinmentAdmin(appoinment);
+	}
 
 }

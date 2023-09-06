@@ -70,8 +70,16 @@ public class LoginController extends HttpServlet {
 					session.setAttribute("userEmail", user.getUser_email());
 					request.setAttribute("userEmail", user.getUser_email());
 					response.sendRedirect("appointments.jsp");
-				}else {
-					 response.sendRedirect("view-all-and-delete.jsp");
+				}else if( 2 == (user.getUser_role())){
+					HttpSession session = request.getSession();
+
+					session.setAttribute("User", user);
+					request.setAttribute("User", user);
+					session.setAttribute("userName", user.getUser_name());
+					request.setAttribute("userName", user.getUser_name());
+					session.setAttribute("userEmail", user.getUser_email());
+					request.setAttribute("userEmail", user.getUser_email());
+					response.sendRedirect("admin-main.jsp");
 				}
 				
 				

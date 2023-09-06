@@ -34,6 +34,12 @@ public class AppoinmentController extends HttpServlet {
 		if(actionType.equals("single")) {
 			fetchSingleAppoinment(request, response);
 		}
+		else if(actionType.equals("singleAdmin")) {
+			fetchSingleAppoinmentAdmin(request, response);
+		}
+		else if(actionType.equals("admin")) {
+			fetchAllAppoinment(request, response);
+		}
 		else {
 			fetchAllAppoinmentUser(request, response);
 		}
@@ -53,6 +59,12 @@ public class AppoinmentController extends HttpServlet {
 			}
 			else if(actionType.equals("delete")) {
 				deleteAppoinment(request, response);
+			}
+			else if(actionType.equals("addAdmin")) {
+				addAppoinmentAdmin(request, response);
+			}
+			else if(actionType.equals("editAdmin")) {
+				editAppoinmentAdmin(request, response);
 			}
 	}
 	
@@ -89,23 +101,59 @@ public class AppoinmentController extends HttpServlet {
 		
 	}
 	
+	private void addAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("User");
+        System.out.println("test"+ user.getUser_id());
+		
+		Appoinment appoinment = new Appoinment();
+		appoinment.setAp_note(request.getParameter("note"));
+		appoinment.setAp_date(request.getParameter("date"));
+		appoinment.setAp_time(request.getParameter("time"));
+		appoinment.setConsultant_id(Integer.parseInt(request.getParameter("consultant")));
+		appoinment.setCountry(request.getParameter("country"));
+		appoinment.setUser_id(user.getUser_id());
+
+				
+		try {
+			if(getAppoinmentService().addAppoinmentAdmin(appoinment))
+			{
+				message = "The Appoinment has been successfully added!";
+			}
+			else {
+				message = "Failed to add the Appoinment!";
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message = "operation failed! " + e.getMessage();
+		}
+		
+		request.setAttribute("feebackMessage", message);
+		RequestDispatcher rd = request.getRequestDispatcher("admin-main.jsp");
+		rd.forward(request, response);
+		
+	}
+	
 	private void editAppoinment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
 		 
 		    Appoinment appoinment = new Appoinment();
+		    appoinment.setAp_id(Integer.parseInt(request.getParameter("Id")));
 			appoinment.setAp_note(request.getParameter("note"));
 			appoinment.setAp_date(request.getParameter("date"));
 			appoinment.setAp_time(request.getParameter("time"));
 			appoinment.setCountry(request.getParameter("country"));
-			appoinment.setConsultant_id(Integer.parseInt(request.getParameter("consultent")));
 			appoinment.setUser_id(user.getUser_id());
 			
 			
 			try {
 				if(getAppoinmentService().editAppoinment(appoinment)) {
 					message = "The Appoinmet has been successfully updated! Appoinment Code: " + appoinment.getAp_id();
+					
 				}
 				else {
 					message = "Failed to update the Appoinment! Appoinment Code: " + appoinment.getAp_id();
@@ -116,7 +164,43 @@ public class AppoinmentController extends HttpServlet {
 			}
 			
 			request.setAttribute("feebackMessage", message);
-			RequestDispatcher rd = request.getRequestDispatcher("search-and-update.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("update-appoinments.jsp");
+			rd.forward(request, response);
+		
+		
+		
+	}
+	
+	private void editAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		
+		
+		 
+		    Appoinment appoinment = new Appoinment();
+		    appoinment.setAp_id(Integer.parseInt(request.getParameter("Id")));
+			appoinment.setAp_note(request.getParameter("note"));
+			appoinment.setAp_date(request.getParameter("date"));
+			appoinment.setAp_time(request.getParameter("time"));
+			appoinment.setConsultant_id(Integer.parseInt(request.getParameter("consultant")));
+			appoinment.setCountry(request.getParameter("country"));
+			
+			
+			
+			try {
+				if(getAppoinmentService().editAppoinmentAdmin(appoinment)) {
+					message = "The Appoinmet has been successfully updated! Appoinment Code: " + appoinment.getAp_id();
+					
+				}
+				else {
+					message = "Failed to update the Appoinment! Appoinment Code: " + appoinment.getAp_id();
+				}
+			} 
+			catch (ClassNotFoundException | SQLException e) {
+				message = e.getMessage();
+			}
+			
+			request.setAttribute("feebackMessage", message);
+			RequestDispatcher rd = request.getRequestDispatcher("update-apAdmin.jsp");
 			rd.forward(request, response);
 		
 		
@@ -126,7 +210,7 @@ public class AppoinmentController extends HttpServlet {
 	private void deleteAppoinment(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		clearMessage();
-		int apId = Integer.parseInt(request.getParameter("APCode"));
+		int apId = Integer.parseInt(request.getParameter("Id"));
 		
 		try {
 			if(getAppoinmentService().deleteAppoinment(apId)) {
@@ -147,7 +231,7 @@ public class AppoinmentController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("message", message);
 		
-		response.sendRedirect("register?actiontype=all");
+		response.sendRedirect("appoinment?actiontype=all");
 		
 	}
 	
@@ -170,7 +254,7 @@ public class AppoinmentController extends HttpServlet {
 			message = e.getMessage();
 		}
 		request.setAttribute("feebackMessage", message);
-		RequestDispatcher rd = request.getRequestDispatcher("search-and-update.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("update-appoinments.jsp");
 		rd.forward(request, response);
 		
 	}
@@ -181,10 +265,9 @@ public class AppoinmentController extends HttpServlet {
 			List<Appoinment> apList = new ArrayList<Appoinment>();
 			try {
 				apList = getAppoinmentService().fetchAllAppoinment();
-				
-				if(!(apList.size() > 0)) {
-					message = "No record found!";
-				}
+			    if (!(apList.size() > 0)) {
+			        message = "No records found!";
+			    } 
 			} 
 			catch (ClassNotFoundException | SQLException e) {
 				message = e.getMessage();
@@ -193,7 +276,7 @@ public class AppoinmentController extends HttpServlet {
 			request.setAttribute("appoinment", apList);
 			request.setAttribute("feebackMessage", message);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("view-all-appointments.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("admin-appoinments.jsp");
 			rd.forward(request, response);
 			
 			
@@ -226,6 +309,31 @@ public class AppoinmentController extends HttpServlet {
 			rd.forward(request, response);
 			
 			
+		
+	}
+	
+	private void fetchSingleAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		
+		
+      int apId = Integer.parseInt(request.getParameter("apCode"));
+		
+		try {
+			Appoinment appoinment = getAppoinmentService().fetchSinglAppoinment(apId);
+			System.out.println(appoinment);
+			if(appoinment.getAp_id() > 0) {
+				request.setAttribute("appoinment", appoinment);
+			}
+			else {
+				message = "No record found!";
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message = e.getMessage();
+		}
+		request.setAttribute("feebackMessage", message);
+		RequestDispatcher rd = request.getRequestDispatcher("update-apAdmin.jsp");
+		rd.forward(request, response);
 		
 	}
 	

@@ -11,7 +11,7 @@
             </li>
              <li class="nav-item">
               <a class="nav-link" href="appoinment?actiontype=all">
-                <span class="menu-title">Appointments all</span>
+                <span class="menu-title">Appointments user</span>
                 <i class="icon-screen-desktop menu-icon"></i>
               </a>
             </li>

@@ -10,7 +10,10 @@ public interface AppoinmentManager {
 	
 
 	public boolean addAppoinment(Appoinment appoinment) throws SQLException, ClassNotFoundException;
+	public boolean addAppoinmentAdmin(Appoinment appoinment) throws SQLException, ClassNotFoundException;
+	
 	public boolean editAppoinment(Appoinment appoinment) throws SQLException, ClassNotFoundException;
+	public boolean editAppoinmentAdmin(Appoinment appoinment) throws SQLException, ClassNotFoundException;
 	public boolean deleteAppoinment(int ap_id) throws SQLException, ClassNotFoundException;
 	
 	public Appoinment fetchSingleAppoinment(int ap_id) throws SQLException, ClassNotFoundException;

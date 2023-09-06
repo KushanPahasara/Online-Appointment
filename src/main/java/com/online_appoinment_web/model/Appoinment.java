@@ -5,25 +5,29 @@ public class Appoinment {
 	private int ap_id;
 	private String ap_note;
 	private int user_id;
+	private String user_name;
 	private int consultant_id;
 	private String ap_date;
 	private String ap_time;
 	private String country;
+	
 	
 	public Appoinment() {
 		// TODO Auto-generated constructor stub
 		
 	}
 
-	public Appoinment(int ap_id, String ap_note, int user_id, int consultant_id, String ap_date, String ap_time, String country) {
+	public Appoinment(int ap_id, String ap_note, int user_id, int consultant_id, String ap_date, String ap_time, String country, String user_name ) {
 		
 		this.ap_id = ap_id;
 		this.ap_note = ap_note;
 		this.user_id = user_id;
+		this.user_name = user_name;
 		this.consultant_id = consultant_id;
 		this.ap_date = ap_date;
 		this.ap_time = ap_time;
 		this.country = country;
+		
 	}
 
 	public int getAp_id() {
@@ -81,6 +85,14 @@ public class Appoinment {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 	
 	

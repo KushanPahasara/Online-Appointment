@@ -37,9 +37,13 @@ public class UsersController extends HttpServlet {
 		if(actionType.equals("single")) {
 			fetchSingleUser(request, response);
 		}
-		else {
+		else if(actionType.equals("update")) {
+			fetchSingleUserAdmin(request, response);
+		}
+		else if(actionType.equals("user")) {
 			fetchAllUsers(request, response);
 		}
+		
        
 		
 	}
@@ -51,11 +55,16 @@ public class UsersController extends HttpServlet {
 		if(actionType.equals("add")) {
 			addUser(request, response);
 		}
+		else if(actionType.equals("addUser")){
+			addUserAdmin(request, response);
+		}
 		else if(actionType.equals("edit")){
 			editUser(request, response);
 		}
 		else if(actionType.equals("delete")) {
 			deleteUser(request, response);
+		}else if(actionType.equals("updateUser")) {
+			editUserAdmin(request, response);
 		}
 		
 	}
@@ -74,10 +83,10 @@ public class UsersController extends HttpServlet {
 		try {
 			if(getUserService().addUser(user))
 			{
-				message = "The product has been successfully added!";
+				message = "The User has been successfully added!";
 			}
 			else {
-				message = "Failed to add the product!";
+				message = "Failed to add the User!";
 			}
 		} 
 		catch (ClassNotFoundException | SQLException e) {
@@ -86,6 +95,35 @@ public class UsersController extends HttpServlet {
 		
 		request.setAttribute("feebackMessage", message);
 		RequestDispatcher rd = request.getRequestDispatcher("register-new.jsp");
+		rd.forward(request, response);
+		
+	}
+	private void addUserAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+
+		User user = new User();
+		user.setUser_name(request.getParameter("userName"));
+		user.setUser_password(request.getParameter("userPassword"));
+		user.setUser_email(request.getParameter("userEmail"));
+		user.setUser_role(Integer.parseInt(request.getParameter("role")));
+		user.setTel_number(Integer.parseInt(request.getParameter("telNumber")));
+				
+	
+		try {
+			if(getUserService().addUser(user))
+			{
+				message = "The User has been successfully added!";
+			}
+			else {
+				message = "Failed to add the User!";
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message = "operation failed! " + e.getMessage();
+		}
+		
+		request.setAttribute("feebackMessage", message);
+		RequestDispatcher rd = request.getRequestDispatcher("addUser.jsp");
 		rd.forward(request, response);
 		
 	}
@@ -123,11 +161,44 @@ public class UsersController extends HttpServlet {
 		
 		
 	}
+	private void editUserAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		 clearMessage();
+			
+			
+			User user = new User();
+			user.setUser_id(Integer.parseInt(request.getParameter("Id")));
+			user.setUser_name(request.getParameter("userName"));
+			user.setUser_password(request.getParameter("userPassword"));
+			user.setUser_email(request.getParameter("userEmail"));
+			user.setUser_role(Integer.parseInt(request.getParameter("role")));
+			user.setTel_number(Integer.parseInt(request.getParameter("telNumber")));
+					
+			
+			try {
+				if(getUserService().editUser(user)) {
+					message = "The product has been successfully updated! Product Code: " + user.getUser_id();
+				}
+				else {
+					message = "Failed to update the product! Product Code: " + user.getUser_id();
+				}
+			} 
+			catch (ClassNotFoundException | SQLException e) {
+				message = e.getMessage();
+			}
+			
+			request.setAttribute("feebackMessage", message);
+			RequestDispatcher rd = request.getRequestDispatcher("updateUser.jsp");
+			rd.forward(request, response);
+		
+		
+		
+	}
 	
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		clearMessage();
-		int userId = Integer.parseInt(request.getParameter("productCode"));
+		int userId = Integer.parseInt(request.getParameter("Id"));
 		
 		try {
 			if(getUserService().deleteUser(userId)) {
@@ -148,7 +219,7 @@ public class UsersController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("message", message);
 		
-		response.sendRedirect("register?actiontype=all");
+		response.sendRedirect("register?actiontype=user");
 		
 	}
 	
@@ -175,6 +246,29 @@ public class UsersController extends HttpServlet {
 		
 	}
 	
+	private void fetchSingleUserAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		
+      int userId = Integer.parseInt(request.getParameter("userCode"));
+		
+		try {
+			User user = getUserService().fetchSinglUser(userId);
+			if(user.getUser_id() > 0) {
+				request.setAttribute("user", user);
+			}
+			else {
+				message = "No record found!";
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message = e.getMessage();
+		}
+		request.setAttribute("feebackMessage", message);
+		RequestDispatcher rd = request.getRequestDispatcher("updateUser.jsp");
+		rd.forward(request, response);
+		
+	}
+	
 	private void fetchAllUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		 clearMessage();
@@ -194,7 +288,7 @@ public class UsersController extends HttpServlet {
 			request.setAttribute("userList", userList);
 			request.setAttribute("feebackMessage", message);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("view-all-and-delete.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("viewAllUsers.jsp");
 			rd.forward(request, response);
 			
 			

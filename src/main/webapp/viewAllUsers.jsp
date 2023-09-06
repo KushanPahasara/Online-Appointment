@@ -15,7 +15,7 @@ if (request.getSession(false).getAttribute("User") == null) {
     <jsp:forward page="newlogin.jsp"></jsp:forward>
     <%
 } 
-%>
+%>  
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
@@ -26,7 +26,7 @@ if (request.getSession(false).getAttribute("User") == null) {
 
   <div class="container-fluid page-body-wrapper">
 
-    <%@include file="structure/sidebar.jsp" %>
+    <%@include file="structure/admin-sidebar.jsp" %>
 
     <div class="main-panel">
       <div class="content-wrapper">
@@ -36,52 +36,43 @@ if (request.getSession(false).getAttribute("User") == null) {
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">List of Appointments</h4>
+                    <h4 class="card-title">List of Users</h4>
                       <p>${feebackMessage}</p>
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
                       <thead>
                       <tr>
-                        <th> Appointment ID</th>
-                        <th> Note </th>
-                        <th> User  </th>
-                        <th> Consultant </th>
-                        <th> Date </th>
-                        <th> Time </th>
-                        <th> Country </th>
+                        <th> User ID</th>
+                        <th> User Name </th>
+                        <th> User Password</th>
+                        <th> User Email </th>
+                        <th> User Role</th>
+                        <th> User Telephone Number</th>
                         <th> Update </th>
                         <th> Delete </th>
                       </tr>
                       </thead>
                       <tbody>
-                      	<tag:forEach var="appoinment" items="${appoinment}">
+                      	<tag:forEach var="user" items="${userList}">
 						<tr>
-							<td>${appoinment.ap_id}</td>
-							<td>${appoinment.ap_note}</td>
-							<td>${appoinment.user_id}</td>
-							<td>
-							<c:choose>
-                            <c:when test="${appoinment.consultant_id == 0}">
-                            Pending
-                            </c:when>
-                            <c:otherwise>
-                            ${appoinment.consultant_id}
-                            </c:otherwise>
-                            </c:choose>
-                              </td>
-							<td>${appoinment.ap_date}</td>
-							<td>${appoinment.ap_time}</td>
-							<td>${appoinment.country}</td>
+							<td>${user.user_id}</td>
+							<td>${user.user_name}</td>
+							<td>${user.user_password}</td>
+							<td>${user.user_email}</td>
+							<td>${user.user_role}</td>
 							
-							<td> <form action="appoinment">			
-				             <input type="hidden" id="Id" name="apCode" value="${appoinment.ap_id}">
-				             <input type="hidden" name="actiontype" value="single"/>
+							<td>${user.tel_number}</td>
+							
+							
+							<td> <form action="register">			
+				             <input type="hidden" id="Id" name="userCode" value="${user.user_id}">
+				             <input type="hidden" name="actiontype" value="update"/>
 				             <br/>
 				             <button type="submit" class="btn btn-primary">Update</button>			
 			                 </form></td>
-							<td> <form action="appoinment" method="post">								
-									<input type="hidden" id="Id" name="Id" value="${appoinment.ap_id}">
+							<td> <form action="register" method="post">								
+									<input type="hidden" id="Id" name="Id" value="${user.user_id}">
 									<input type="hidden" name="actiontype" value="delete">
 									<button type="submit" class="btn btn-danger">Delete</button>
 						     </form></td>

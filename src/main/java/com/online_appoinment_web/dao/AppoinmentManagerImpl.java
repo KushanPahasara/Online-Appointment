@@ -60,16 +60,15 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
            
 	    Connection connection = getConnection();
 		
-			String query = "UPDATE appoinment SET ap_note=?, user_id=?, consultant_id=?, ap_date=?, ap_time=?, country=? WHERE ap_id=?";
+			String query = "UPDATE appoinment SET ap_note=?, user_id=?, ap_date=?, ap_time=?, country=? WHERE ap_id=?";
 			
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setString(1, appoinment.getAp_note());
 			ps.setInt(2, appoinment.getUser_id());
-			ps.setInt(3, appoinment.getConsultant_id());
-			ps.setString(4, appoinment.getAp_date());
-			ps.setString(5, appoinment.getAp_time());
-			ps.setString(6, appoinment.getCountry());
-			ps.setInt(7, appoinment.getAp_id());
+			ps.setString(3, appoinment.getAp_date());
+			ps.setString(4, appoinment.getAp_time());
+			ps.setString(5, appoinment.getCountry());
+			ps.setInt(6, appoinment.getAp_id());
 			
 			boolean result = false;
 			
@@ -159,6 +158,18 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_date(rs.getString("ap_date"));
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
+	
+			String q = "SELECT user_name FROM user WHERE user_id=?";
+			PreparedStatement ps = connection.prepareStatement(q);
+			ps.setInt(1, rs.getInt("user_id"));
+			ResultSet result = ps.executeQuery();
+			
+			if (result.next()) {
+			    appoinment.setUser_name(result.getString("user_name"));
+			} else {
+			    appoinment.setUser_name("N/A"); // Set default value if user is not found
+			}
+			
 			
 			appoinmentList.add(appoinment);
 	
@@ -202,5 +213,56 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 		return appoinmentList;
 		
 	}
+
+
+	@Override
+	public boolean addAppoinmentAdmin(Appoinment appoinment) throws SQLException, ClassNotFoundException {
+		   Connection connection = getConnection();
+			String query = "INSERT INTO appoinment(ap_note,user_id,consultant_id,ap_date,ap_time,country) VALUES (?,?,?,?,?,?)";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, appoinment.getAp_note());
+			ps.setInt(2, appoinment.getUser_id());
+			ps.setInt(3, appoinment.getConsultant_id());
+		    ps.setString(4, appoinment.getAp_date());
+		    ps.setString(5, appoinment.getAp_time());
+			ps.setString(6, appoinment.getCountry());
+			
+			boolean result = false;
+			
+			if (ps.executeUpdate() > 0)
+			    result = true;
+			
+			
+		    ps.close();
+			connection.close();
+			return result;
+		
+	}
+
+
+	@Override
+	public boolean editAppoinmentAdmin(Appoinment appoinment) throws SQLException, ClassNotFoundException {
+		 Connection connection = getConnection();
+			
+			String query = "UPDATE appoinment SET ap_note=?, consultant_id=?, ap_date=?, ap_time=?, country=? WHERE ap_id=?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, appoinment.getAp_note());
+			ps.setInt(2, appoinment.getConsultant_id());
+			ps.setString(3, appoinment.getAp_date());
+			ps.setString(4, appoinment.getAp_time());
+			ps.setString(5, appoinment.getCountry());
+			ps.setInt(6, appoinment.getAp_id());
+			
+			boolean result = false;
+			
+			if(ps.executeUpdate() > 0)
+				result = true;
+			
+			ps.close();
+			connection.close();
+			
+			return result;
+	}
+
 
 }
