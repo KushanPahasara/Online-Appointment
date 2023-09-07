@@ -26,7 +26,7 @@ if (request.getSession(false).getAttribute("User") == null) {
 
   <div class="container-fluid page-body-wrapper">
 
-    <%@include file="structure/sidebar.jsp" %>
+    <%@include file="structure/consultant-sidebar.jsp" %>
 
     <div class="main-panel">
       <div class="content-wrapper">
@@ -36,8 +36,7 @@ if (request.getSession(false).getAttribute("User") == null) {
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">List Your of Appointments</h4>
-                      <p>${feebackMessage}</p>
+                    <h4 class="card-title">List Your of Appointments</h4> 
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
@@ -63,12 +62,25 @@ if (request.getSession(false).getAttribute("User") == null) {
 							<td>${appoinment.ap_time}</td>
 							<td>${appoinment.country}</td>
 							
-							<td> <form action="appoinment">			
-				             <input type="hidden" id="Id" name="apCode" value="${appoinment.ap_id}">
-				             <input type="hidden" name="actiontype" value="single"/>
-				             <br/>
-				             <button type="submit" class="btn btn-primary">Update</button>			
-			                 </form></td>
+							 <td>
+						        <c:choose>
+                                <c:when test="${appoinment.status == 0}">
+                                <form action="appoinment" method="post">
+                                <input type="hidden" id="Id" name="Id" value="${appoinment.ap_id}">			
+				                <input type="hidden" id="Id" name="apCode" value="1">
+				                <input type="hidden" name="actiontype" value="acccept"/>
+				                <br/>
+				                <button type="submit" class="btn btn-primary">accept</button>			
+			                   </form>
+                              
+                                 </c:when>
+                                <c:otherwise>
+                                
+				                <button type="submit" class="btn btn-danger">accepted</button>			
+			      
+                               </c:otherwise>
+                              </c:choose>
+						    </td>
 								
 						</tr>
 					</tag:forEach>

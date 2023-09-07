@@ -268,7 +268,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 	@Override
 	public List<Appoinment> fetchAllAppoinmentConsultant(int consultant_id) throws SQLException, ClassNotFoundException {
 		Connection connection = getConnection();
-		String query = "SELECT * FROM appoinment consultant_id=?";
+		String query = "SELECT * FROM appoinment where consultant_id=?";
 		PreparedStatement st = connection.prepareStatement(query);
 		st.setInt(1, consultant_id);
 		List<Appoinment> appoinmentList = new ArrayList<Appoinment>();
@@ -284,6 +284,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_date(rs.getString("ap_date"));
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
+			appoinment.setStatus(rs.getInt("status"));
 			
 			appoinmentList.add(appoinment);
 	
@@ -292,6 +293,28 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 		st.close();
 		connection.close();
 		return appoinmentList;
+	}
+
+
+	@Override
+	public boolean addStatus(Appoinment appoinment) throws SQLException, ClassNotFoundException {
+		 Connection connection = getConnection();
+			
+			String query = "UPDATE appoinment SET status=? WHERE ap_id=?";
+			
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setInt(1, appoinment.getStatus());
+			ps.setInt(2, appoinment.getAp_id());
+			
+			boolean result = false;
+			
+			if(ps.executeUpdate() > 0)
+				result = true;
+			
+			ps.close();
+			connection.close();
+			
+			return result;
 	}
 
 

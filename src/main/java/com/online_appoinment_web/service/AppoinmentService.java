@@ -64,5 +64,11 @@ public class AppoinmentService {
 	public boolean editAppoinmentAdmin(Appoinment appoinment) throws ClassNotFoundException, SQLException {
 		return getAppoinmentManager().editAppoinmentAdmin(appoinment);
 	}
+	
+	public boolean addStatus(Appoinment appoinment) throws ClassNotFoundException, SQLException {
+		return getAppoinmentManager().addStatus(appoinment);
+	}
+	
+	
 
 }

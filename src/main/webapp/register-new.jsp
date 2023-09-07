@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Stellar Admin</title>
+    <title>Online Appointment System</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../vendors/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="../../vendors/flag-icon-css/css/flag-icon.min.css">
@@ -43,9 +43,7 @@
                   <div class="form-group">
                     <input type="password" class="form-control form-control-lg" name="userPassword" id="userPassword" placeholder="Password">
                   </div>
-                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="role" id="role" placeholder="Role">
-                  </div>
+                    <input type="hidden" class="form-control form-control-lg" name="role" id="role" value="1">
                   <div class="form-group">
                     <input type="text" class="form-control form-control-lg" name="telNumber" id="telNumber" placeholder="Telephone">
                   </div>

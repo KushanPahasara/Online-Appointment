@@ -1,7 +1,21 @@
+<%@ taglib prefix="tag" uri="http://java.sun.com/jsp/jstl/core"%>  <%@page import=" java.util.ArrayList" %>
+<%@ page import="com.online_appoinment_web.model.User" %>
+<%@page import=" java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
-<%@ taglib prefix="tag" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@page import="java.util.*"%>
+<% 
+ //In case, if User session is not set, redirect to Login page.
+
+if (request.getSession(false).getAttribute("User") == null) {
+	
+    %>
+    <jsp:forward page="newlogin.jsp"></jsp:forward>
+    <%
+} 
+%>    
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
@@ -23,6 +37,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">List of Appointments </h4>
+                    <p>${feebackMessage}</p>
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
@@ -68,7 +83,7 @@
 			                 </form></td>
 							<td> <form action="appoinment" method="post">								
 									<input type="hidden" id="Id" name="Id" value="${appoinment.ap_id}">
-									<input type="hidden" name="actiontype" value="delete">
+									<input type="hidden" name="actiontype" value="adminDelete">
 									<button type="submit" class="btn btn-danger">Delete</button>
 						     </form></td>
 									

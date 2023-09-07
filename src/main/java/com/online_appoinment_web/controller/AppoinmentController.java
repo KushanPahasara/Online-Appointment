@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.online_appoinment_web.model.Appoinment;
 import com.online_appoinment_web.model.User;
 import com.online_appoinment_web.service.AppoinmentService;
-import com.online_appoinment_web.service.UserService;
+
 
 
 public class AppoinmentController extends HttpServlet {
@@ -39,6 +39,9 @@ public class AppoinmentController extends HttpServlet {
 		}
 		else if(actionType.equals("admin")) {
 			fetchAllAppoinment(request, response);
+		}
+		else if(actionType.equals("consultant")) {
+			fetchAllAppoinmentConsultant(request, response);
 		}
 		else {
 			fetchAllAppoinmentUser(request, response);
@@ -66,13 +69,20 @@ public class AppoinmentController extends HttpServlet {
 			else if(actionType.equals("editAdmin")) {
 				editAppoinmentAdmin(request, response);
 			}
+			else if(actionType.equals("adminDelete")) {
+				deleteAppoinmentAdmin(request, response);
+			}
+			else if(actionType.equals("acccept")) {
+				addStatus(request, response);
+			}
+			
 	}
 	
 	private void addAppoinment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
-        System.out.println("test"+ user.getUser_id());
+        
 		
 		Appoinment appoinment = new Appoinment();
 		appoinment.setAp_note(request.getParameter("note"));
@@ -105,7 +115,7 @@ public class AppoinmentController extends HttpServlet {
 	{
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
-        System.out.println("test"+ user.getUser_id());
+       
 		
 		Appoinment appoinment = new Appoinment();
 		appoinment.setAp_note(request.getParameter("note"));
@@ -137,6 +147,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void editAppoinment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		clearMessage();
 		
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
@@ -173,7 +184,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void editAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		
+		clearMessage();
 		
 		 
 		    Appoinment appoinment = new Appoinment();
@@ -209,7 +220,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void deleteAppoinment(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		clearMessage();
+		
 		int apId = Integer.parseInt(request.getParameter("Id"));
 		
 		try {
@@ -232,6 +243,33 @@ public class AppoinmentController extends HttpServlet {
 		session.setAttribute("message", message);
 		
 		response.sendRedirect("appoinment?actiontype=all");
+		
+	}
+	private void deleteAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		
+		int apId = Integer.parseInt(request.getParameter("Id"));
+		
+		try {
+			if(getAppoinmentService().deleteAppoinment(apId)) {
+				message = "The Appoinment has been successfully deleted. AppoinmentCode: " + apId;
+			}
+			else {
+				message = "Failed to delet the Appoinment! AppoinmentCode: " + apId;
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message =e.getMessage();
+		}
+		
+		//request.setAttribute("feebackMessage", message);
+		//RequestDispatcher rd = request.getRequestDispatcher("view-all-and-delete-specific.jsp");
+		//rd.forward(request, response);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("message", message);
+		
+		response.sendRedirect("appoinment?actiontype=admin");
 		
 	}
 	
@@ -261,7 +299,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void fetchAllAppoinment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		    
+		clearMessage();
 			List<Appoinment> apList = new ArrayList<Appoinment>();
 			try {
 				apList = getAppoinmentService().fetchAllAppoinment();
@@ -285,6 +323,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void fetchAllAppoinmentUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		clearMessage();
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
         int userId = user.getUser_id();
@@ -364,6 +403,38 @@ public class AppoinmentController extends HttpServlet {
 		rd.forward(request, response);
 		
 	}
+	
+	   private void addStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		
+		
+		   Appoinment appoinment = new Appoinment();
+		    appoinment.setAp_id(Integer.parseInt(request.getParameter("Id")));
+			appoinment.setStatus(Integer.parseInt(request.getParameter("apCode")));
+			
+			
+			
+			
+			try {
+				if(getAppoinmentService().addStatus(appoinment)) {
+					message = "The Appoinmet has been successfully updated! Appoinment Code: " + appoinment.getAp_id();
+					
+				}
+				else {
+					message = "Failed to update the Appoinment! Appoinment Code: " + appoinment.getAp_id();
+				}
+			} 
+			catch (ClassNotFoundException | SQLException e) {
+				message = e.getMessage();
+			}
+			
+			
+			RequestDispatcher rd = request.getRequestDispatcher("ConsultantAppointments.jsp");
+			rd.forward(request, response);
+		
+	}
+	
+
 	
 	private void clearMessage() {
 		message = "";

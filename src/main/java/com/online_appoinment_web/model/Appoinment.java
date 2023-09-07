@@ -10,6 +10,7 @@ public class Appoinment {
 	private String ap_date;
 	private String ap_time;
 	private String country;
+	private int status;
 	
 	
 	public Appoinment() {
@@ -17,7 +18,7 @@ public class Appoinment {
 		
 	}
 
-	public Appoinment(int ap_id, String ap_note, int user_id, int consultant_id, String ap_date, String ap_time, String country, String user_name ) {
+	public Appoinment(int ap_id, String ap_note, int user_id, int consultant_id, String ap_date, String ap_time, String country, String user_name, int status ) {
 		
 		this.ap_id = ap_id;
 		this.ap_note = ap_note;
@@ -27,6 +28,7 @@ public class Appoinment {
 		this.ap_date = ap_date;
 		this.ap_time = ap_time;
 		this.country = country;
+		this.status = status;
 		
 	}
 
@@ -93,6 +95,14 @@ public class Appoinment {
 
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	

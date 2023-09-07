@@ -34,12 +34,12 @@
 							<div class="brand-logo">
 								<img src="images/logo.svg">
 							</div>
-							<h4>Wellcome to Online Appoinment System</h4>
+							<h4>Welcome to Online Appointment System</h4>
 							<h6 class="font-weight-light">Sign in to continue.</h6>
 							 <p style='color:magenta'>${feebackMessage}</p>
 							<form class="pt-3" action="login" method="post">
 								<div class="form-group">
-									<input type="text" class="form-control form-control-lg"
+									<input type="text" class="form-control"
 										id="name" name="name" placeholder="Username">
 								</div>
 								<div class="form-group">
