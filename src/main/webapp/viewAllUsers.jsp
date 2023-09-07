@@ -36,7 +36,7 @@ if (request.getSession(false).getAttribute("User") == null) {
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">List of Users</h4>
+                    <h4 class="card-title">List of All Users</h4>
                       <p>${feebackMessage}</p>
                     <p class="card-description"> <code></code>
                     </p>
