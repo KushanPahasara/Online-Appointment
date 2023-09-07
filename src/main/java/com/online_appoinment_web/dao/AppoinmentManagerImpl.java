@@ -265,4 +265,34 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 	}
 
 
+	@Override
+	public List<Appoinment> fetchAllAppoinmentConsultant(int consultant_id) throws SQLException, ClassNotFoundException {
+		Connection connection = getConnection();
+		String query = "SELECT * FROM appoinment consultant_id=?";
+		PreparedStatement st = connection.prepareStatement(query);
+		st.setInt(1, consultant_id);
+		List<Appoinment> appoinmentList = new ArrayList<Appoinment>();
+		
+		ResultSet rs = st.executeQuery();
+		
+		while(rs.next()) {
+			
+			Appoinment appoinment = new Appoinment();
+			appoinment.setAp_id(rs.getInt("ap_id"));
+			appoinment.setAp_note(rs.getString("ap_note"));
+			appoinment.setUser_id(rs.getInt("user_id"));
+			appoinment.setAp_date(rs.getString("ap_date"));
+			appoinment.setAp_time(rs.getString("ap_time"));
+			appoinment.setCountry(rs.getString("country"));
+			
+			appoinmentList.add(appoinment);
+	
+		}
+		
+		st.close();
+		connection.close();
+		return appoinmentList;
+	}
+
+
 }

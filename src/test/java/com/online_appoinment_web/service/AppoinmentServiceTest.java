@@ -56,8 +56,8 @@ class AppoinmentServiceTest {
 
 	    @Test
 	    public void AddAppoinment() throws ClassNotFoundException, SQLException {
-	        Appoinment fakeAppointment = new Appoinment();
-	        assertTrue(appoinmentService.addAppoinment(fakeAppointment));
+	        Appoinment testAppointment = new Appoinment();
+	        assertTrue(appoinmentService.addAppoinment(testAppointment));
 	    }
 
 	    @Test
@@ -67,9 +67,9 @@ class AppoinmentServiceTest {
 	    }
 
 	    @Test
-	    public void testUpdateAppointment() throws ClassNotFoundException, SQLException {
-	        Appoinment fakeAppointment = new Appoinment();
-	        assertTrue(appoinmentService.editAppoinment(fakeAppointment));
+	    public void UpdateAppointment() throws ClassNotFoundException, SQLException {
+	        Appoinment testAppointment = new Appoinment();
+	        assertTrue(appoinmentService.editAppoinment(testAppointment));
 	    }
 
 

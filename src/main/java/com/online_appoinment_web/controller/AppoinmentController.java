@@ -311,6 +311,34 @@ public class AppoinmentController extends HttpServlet {
 			
 		
 	}
+	private void fetchAllAppoinmentConsultant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("User");
+        int userId = user.getUser_id();
+		
+		
+			List<Appoinment> apList = new ArrayList<Appoinment>();
+			try {
+				apList = getAppoinmentService().fetchAllAppoinmentConsultant(userId);
+				
+				if(!(apList.size() > 0)) {
+					message = "No record found!";
+				}
+			} 
+			catch (ClassNotFoundException | SQLException e) {
+				message = e.getMessage();
+			}
+			
+			request.setAttribute("appoinment", apList);
+			request.setAttribute("feebackMessage", message);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("ConsultantAppointments.jsp");
+			rd.forward(request, response);
+			
+			
+		
+	}
 	
 	private void fetchSingleAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
