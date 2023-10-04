@@ -14,6 +14,7 @@ public interface UserManager {
 	
 	public User fetchSingleUser(int user_id) throws SQLException, ClassNotFoundException;
 	public List<User> fetchAllUsers() throws SQLException, ClassNotFoundException;
+	public List<User> fetchAllConsultants() throws SQLException, ClassNotFoundException;
 	
 	
 

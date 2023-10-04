@@ -64,7 +64,7 @@ if (request.getSession(false).getAttribute("User") == null) {
                    
                        <input type="hidden" name="actiontype" value="addAdmin"/>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button class="btn btn-light">Cancel</button>
+                      <button type="reset" class="btn btn-danger">Reset</button>
                     </form>
                   </div>
                 </div>

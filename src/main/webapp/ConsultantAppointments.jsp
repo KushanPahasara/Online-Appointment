@@ -6,16 +6,17 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <%@page import="java.util.*"%>
+ 
 <% 
  //In case, if User session is not set, redirect to Login page.
-
-if (request.getSession(false).getAttribute("User") == null) {
-	
+User user = (User) request.getSession(false).getAttribute("User");
+if (user == null) {
     %>
     <jsp:forward page="newlogin.jsp"></jsp:forward>
     <%
-} 
+}
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
@@ -37,6 +38,7 @@ if (request.getSession(false).getAttribute("User") == null) {
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">List Your of Appointments</h4> 
+                    <p>${feebackMessage}</p>
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
@@ -45,10 +47,12 @@ if (request.getSession(false).getAttribute("User") == null) {
                         <th> Appointment ID</th>
                         <th> Note </th>
                         <th> User  </th>
+                        <th>Contact No</th>
                         <th> Date </th>
                         <th> Time </th>
                         <th> Country </th>
                         <th> Update </th>
+                        <th> Delete </th>
                         
                       </tr>
                       </thead>
@@ -57,7 +61,8 @@ if (request.getSession(false).getAttribute("User") == null) {
 						<tr>
 							<td>${appoinment.ap_id}</td>
 							<td>${appoinment.ap_note}</td>
-							<td>${appoinment.user_id}</td>
+							<td>${appoinment.user_name}</td>
+							<td>${appoinment.user_phone}</td>
 							<td>${appoinment.ap_date}</td>
 							<td>${appoinment.ap_time}</td>
 							<td>${appoinment.country}</td>
@@ -76,12 +81,18 @@ if (request.getSession(false).getAttribute("User") == null) {
                                  </c:when>
                                 <c:otherwise>
                                 
-				                <button type="submit" class="btn btn-danger">accepted</button>			
+				                <button type="submit" class="btn btn-secondary">accepted</button>			
 			      
                                </c:otherwise>
                               </c:choose>
 						    </td>
-								
+						    <td> <form action="appoinment" method="post">								
+									<input type="hidden" id="Id" name="Id" value="${appoinment.ap_id}">
+									<input type="hidden" name="actiontype" value="conDelete">
+									<button type="submit" class="btn btn-danger">Delete</button>
+						     </form>
+						     </td>
+						   
 						</tr>
 					</tag:forEach>
                      

@@ -59,16 +59,16 @@ if (request.getSession(false).getAttribute("User") == null) {
                        <div class="form-group">
                       <label for="Role">Role</label>
                       <select class="form-control form-control-lg" id="role" name="role">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                        <option value="1">USER</option>
+                        <option value="2">ADMIN</option>
+                        <option value="3">Consultant</option>
                        
                       </select>
                     </div>
                        
                         <input type="hidden" name="actiontype" value="addUser"/>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button class="btn btn-light">Cancel</button>
+                      <button type="reset" class="btn btn-danger">Reset</button>
                     </form>
                   </div>
                 </div>

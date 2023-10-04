@@ -15,7 +15,8 @@ if (request.getSession(false).getAttribute("User") == null) {
     <jsp:forward page="newlogin.jsp"></jsp:forward>
     <%
 } 
-%>    
+%>   
+
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
@@ -37,7 +38,8 @@ if (request.getSession(false).getAttribute("User") == null) {
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">List of Appointments </h4>
-                    <p>${feebackMessage}</p>
+                    
+                    
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
@@ -63,7 +65,7 @@ if (request.getSession(false).getAttribute("User") == null) {
 							<td>${appoinment.user_name}</td>
 							<td>
 							<c:choose>
-                            <c:when test="${appoinment.consultant_id == 0}">
+                            <c:when test="${appoinment.consultant_id == null}">
                             Pending
                             </c:when>
                             <c:otherwise>

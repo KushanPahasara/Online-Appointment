@@ -35,17 +35,17 @@
                 <p style='color:magenta'>${feebackMessage}</p>
                 <form class="pt-3" action="register" method="post">
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="userName" id="userName" placeholder="Username">
+                    <input type="text" class="form-control form-control-lg" name="userName" id="userName" placeholder="Username" required>
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control form-control-lg" name="userEmail" id="userEmail" placeholder="Email">
+                    <input type="email" class="form-control form-control-lg" name="userEmail" id="userEmail" placeholder="Email" required>
                   </div>
                   <div class="form-group">
-                    <input type="password" class="form-control form-control-lg" name="userPassword" id="userPassword" placeholder="Password">
+                    <input type="password" class="form-control form-control-lg" name="userPassword" id="userPassword" placeholder="Password" required>
                   </div>
                     <input type="hidden" class="form-control form-control-lg" name="role" id="role" value="1">
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" name="telNumber" id="telNumber" placeholder="Telephone">
+                    <input type="text" class="form-control form-control-lg" name="telNumber" id="telNumber" placeholder="Telephone" required>
                   </div>
                   <input type="hidden" name="actiontype" value="add"/>
                   <div class="mt-3">

@@ -121,13 +121,32 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_id(rs.getInt("ap_id"));
 			appoinment.setAp_note(rs.getString("ap_note"));
 			appoinment.setUser_id(rs.getInt("user_id"));
-			appoinment.setConsultant_id(rs.getInt("consultant_id"));
+			appoinment.setConsultant_id(rs.getString("consultant_id"));
 			appoinment.setAp_date(rs.getString("ap_date"));
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
 			
+			String q = "SELECT user_name FROM user WHERE role_id=?";
+			PreparedStatement ts = connection.prepareStatement(q);
+			ts.setInt(1, 3);
+			ResultSet result = ts.executeQuery();
+
+			List<String> consultantsList = new ArrayList<>(); // Create a list to store user_names
+
+			if (result.next()) {
+			    do {
+			        String userName = result.getString("user_name");
+			        consultantsList.add(userName); // Add user_name to the list
+			    } while (result.next());
+			    appoinment.setConsultants(consultantsList); // Set the list to appoinment.setConsultants
+			} else {
+			    appoinment.setUser_name("N/A"); // Set default value if no user is found
+			}
+
+			
+			
 		}
-		
+		System.out.println(appoinment.getConsultants());
 		ps.close();
 		connection.close();
 		return appoinment;
@@ -154,7 +173,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_id(rs.getInt("ap_id"));
 			appoinment.setAp_note(rs.getString("ap_note"));
 			appoinment.setUser_id(rs.getInt("user_id"));
-			appoinment.setConsultant_id(rs.getInt("consultant_id"));
+			appoinment.setConsultant_id(rs.getString("consultant_id"));
 			appoinment.setAp_date(rs.getString("ap_date"));
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
@@ -199,7 +218,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_id(rs.getInt("ap_id"));
 			appoinment.setAp_note(rs.getString("ap_note"));
 			appoinment.setUser_id(rs.getInt("user_id"));
-			appoinment.setConsultant_id(rs.getInt("consultant_id"));
+			appoinment.setConsultant_id(rs.getString("consultant_id"));
 			appoinment.setAp_date(rs.getString("ap_date"));
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
@@ -222,7 +241,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setString(1, appoinment.getAp_note());
 			ps.setInt(2, appoinment.getUser_id());
-			ps.setInt(3, appoinment.getConsultant_id());
+			ps.setString(3, appoinment.getConsultant_id());
 		    ps.setString(4, appoinment.getAp_date());
 		    ps.setString(5, appoinment.getAp_time());
 			ps.setString(6, appoinment.getCountry());
@@ -247,7 +266,7 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			String query = "UPDATE appoinment SET ap_note=?, consultant_id=?, ap_date=?, ap_time=?, country=? WHERE ap_id=?";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setString(1, appoinment.getAp_note());
-			ps.setInt(2, appoinment.getConsultant_id());
+			ps.setString(2, appoinment.getConsultant_id());
 			ps.setString(3, appoinment.getAp_date());
 			ps.setString(4, appoinment.getAp_time());
 			ps.setString(5, appoinment.getCountry());
@@ -266,11 +285,11 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 
 
 	@Override
-	public List<Appoinment> fetchAllAppoinmentConsultant(int consultant_id) throws SQLException, ClassNotFoundException {
+	public List<Appoinment> fetchAllAppoinmentConsultant(String consultant_id) throws SQLException, ClassNotFoundException {
 		Connection connection = getConnection();
 		String query = "SELECT * FROM appoinment where consultant_id=?";
 		PreparedStatement st = connection.prepareStatement(query);
-		st.setInt(1, consultant_id);
+		st.setString(1, consultant_id);
 		List<Appoinment> appoinmentList = new ArrayList<Appoinment>();
 		
 		ResultSet rs = st.executeQuery();
@@ -285,6 +304,28 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			appoinment.setAp_time(rs.getString("ap_time"));
 			appoinment.setCountry(rs.getString("country"));
 			appoinment.setStatus(rs.getInt("status"));
+			
+			String q = "SELECT user_name FROM user WHERE user_id=?";
+			PreparedStatement ps = connection.prepareStatement(q);
+			ps.setInt(1, rs.getInt("user_id"));
+			ResultSet result = ps.executeQuery();
+			
+			if (result.next()) {
+			    appoinment.setUser_name(result.getString("user_name"));
+			} else {
+			    appoinment.setUser_name("N/A"); 
+			}
+			
+			String t = "SELECT tel_number FROM user WHERE user_id=?";
+			PreparedStatement tt = connection.prepareStatement(t);
+			tt.setInt(1, rs.getInt("user_id"));
+			ResultSet resultnew = tt.executeQuery();
+			
+			if (resultnew.next()) {
+			    appoinment.setUser_phone(resultnew.getString("tel_number"));
+			} else {
+			    appoinment.setUser_phone("N/A"); 
+			}
 			
 			appoinmentList.add(appoinment);
 	
@@ -316,6 +357,10 @@ public class AppoinmentManagerImpl implements AppoinmentManager {
 			
 			return result;
 	}
+
+
+	
+	
 
 
 }

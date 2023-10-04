@@ -75,6 +75,9 @@ public class AppoinmentController extends HttpServlet {
 			else if(actionType.equals("acccept")) {
 				addStatus(request, response);
 			}
+			else if(actionType.equals("conDelete")) {
+				deleteAppoinmentConsultant(request, response);
+			}
 			
 	}
 	
@@ -121,7 +124,7 @@ public class AppoinmentController extends HttpServlet {
 		appoinment.setAp_note(request.getParameter("note"));
 		appoinment.setAp_date(request.getParameter("date"));
 		appoinment.setAp_time(request.getParameter("time"));
-		appoinment.setConsultant_id(Integer.parseInt(request.getParameter("consultant")));
+		appoinment.setConsultant_id(request.getParameter("consultant"));
 		appoinment.setCountry(request.getParameter("country"));
 		appoinment.setUser_id(user.getUser_id());
 
@@ -192,7 +195,7 @@ public class AppoinmentController extends HttpServlet {
 			appoinment.setAp_note(request.getParameter("note"));
 			appoinment.setAp_date(request.getParameter("date"));
 			appoinment.setAp_time(request.getParameter("time"));
-			appoinment.setConsultant_id(Integer.parseInt(request.getParameter("consultant")));
+			appoinment.setConsultant_id(request.getParameter("consultant"));
 			appoinment.setCountry(request.getParameter("country"));
 			
 			
@@ -219,7 +222,8 @@ public class AppoinmentController extends HttpServlet {
 	}
 	
 	private void deleteAppoinment(HttpServletRequest request, HttpServletResponse response) throws IOException
-	{
+	{ 
+		clearMessage();
 		
 		int apId = Integer.parseInt(request.getParameter("Id"));
 		
@@ -235,9 +239,6 @@ public class AppoinmentController extends HttpServlet {
 			message =e.getMessage();
 		}
 		
-		//request.setAttribute("feebackMessage", message);
-		//RequestDispatcher rd = request.getRequestDispatcher("view-all-and-delete-specific.jsp");
-		//rd.forward(request, response);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("message", message);
@@ -245,8 +246,10 @@ public class AppoinmentController extends HttpServlet {
 		response.sendRedirect("appoinment?actiontype=all");
 		
 	}
+	
 	private void deleteAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
+		
 		
 		int apId = Integer.parseInt(request.getParameter("Id"));
 		
@@ -262,14 +265,39 @@ public class AppoinmentController extends HttpServlet {
 			message =e.getMessage();
 		}
 		
-		//request.setAttribute("feebackMessage", message);
-		//RequestDispatcher rd = request.getRequestDispatcher("view-all-and-delete-specific.jsp");
-		//rd.forward(request, response);
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("message", message);
 		
 		response.sendRedirect("appoinment?actiontype=admin");
+		
+		
+	}
+	
+	private void deleteAppoinmentConsultant(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		
+		
+		int apId = Integer.parseInt(request.getParameter("Id"));
+		
+		try {
+			if(getAppoinmentService().deleteAppoinment(apId)) {
+				message = "The Appoinment has been successfully deleted. AppoinmentCode: " + apId;
+			}
+			else {
+				message = "Failed to delet the Appoinment! AppoinmentCode: " + apId;
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) {
+			message =e.getMessage();
+		}
+		
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("message", message);
+		
+		response.sendRedirect("appoinment?actiontype=consultant");
+		
 		
 	}
 	
@@ -352,14 +380,16 @@ public class AppoinmentController extends HttpServlet {
 	}
 	private void fetchAllAppoinmentConsultant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		clearMessage();
+		
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("User");
-        int userId = user.getUser_id();
+        String userName = user.getUser_name();
 		
 		
 			List<Appoinment> apList = new ArrayList<Appoinment>();
 			try {
-				apList = getAppoinmentService().fetchAllAppoinmentConsultant(userId);
+				apList = getAppoinmentService().fetchAllAppoinmentConsultant(userName);
 				
 				if(!(apList.size() > 0)) {
 					message = "No record found!";
@@ -381,7 +411,7 @@ public class AppoinmentController extends HttpServlet {
 	
 	private void fetchSingleAppoinmentAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		
+		clearMessage();
 		
       int apId = Integer.parseInt(request.getParameter("apCode"));
 		
@@ -428,9 +458,11 @@ public class AppoinmentController extends HttpServlet {
 				message = e.getMessage();
 			}
 			
+			String redirectURL = "appoinment?actiontype=consultant";
+            response.sendRedirect(redirectURL);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("ConsultantAppointments.jsp");
-			rd.forward(request, response);
+//			RequestDispatcher rd = request.getRequestDispatcher("ConsultantAppointments.jsp");
+//			rd.forward(request, response);
 		
 	}
 	

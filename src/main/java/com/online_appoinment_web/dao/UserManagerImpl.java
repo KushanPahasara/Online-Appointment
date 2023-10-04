@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.online_appoinment_web.dao.dbutils.DbDriverManager;
 import com.online_appoinment_web.dao.dbutils.DbDriverManagerFactory;
+import com.online_appoinment_web.model.Appoinment;
 import com.online_appoinment_web.model.User;
 
 public class UserManagerImpl implements UserManager {
@@ -122,6 +123,36 @@ public class UserManagerImpl implements UserManager {
 	public List<User> fetchAllUsers() throws SQLException, ClassNotFoundException {
 		Connection connection = getConnection();
 		String query = "SELECT * FROM user";
+		Statement st = connection.createStatement();
+		
+		List<User> userList = new ArrayList<User>();
+		
+		ResultSet rs = st.executeQuery(query);
+		
+		while(rs.next()) {
+			
+			User user = new User();
+			user.setUser_id(rs.getInt("user_id"));
+			user.setUser_name(rs.getString("user_name"));
+			user.setUser_password(rs.getString("user_password"));
+			user.setUser_email(rs.getString("user_email"));
+			user.setTel_number(rs.getInt("tel_number"));
+			user.setUser_role(rs.getInt("role_id"));
+			
+			userList.add(user);
+	
+		}
+		
+		st.close();
+		connection.close();
+		return userList;
+	}
+
+	@Override
+	public List<User> fetchAllConsultants() throws SQLException, ClassNotFoundException {
+		
+		Connection connection = getConnection();
+		String query = "SELECT * FROM user where role_id=?";
 		Statement st = connection.createStatement();
 		
 		List<User> userList = new ArrayList<User>();

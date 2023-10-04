@@ -22,7 +22,8 @@ public interface AppoinmentManager {
 	public Appoinment fetchSingleAppoinment(int ap_id) throws SQLException, ClassNotFoundException;
 	public List<Appoinment> fetchAllAppoinment() throws SQLException, ClassNotFoundException;
 	public List<Appoinment> fetchAllAppoinmentUser(int user_id) throws SQLException, ClassNotFoundException;
-	public List<Appoinment> fetchAllAppoinmentConsultant(int consultant_id) throws SQLException, ClassNotFoundException;
+	public List<Appoinment> fetchAllAppoinmentConsultant(String consultant_id) throws SQLException, ClassNotFoundException;
+	
 	
 
 }

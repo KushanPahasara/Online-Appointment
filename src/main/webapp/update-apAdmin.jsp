@@ -16,6 +16,8 @@ if (request.getSession(false).getAttribute("User") == null) {
     <%
 } 
 %>  
+
+
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
@@ -53,10 +55,17 @@ if (request.getSession(false).getAttribute("User") == null) {
                         <label for="Time">Appointment Time</label>
                         <input type="text" class="form-control" id="time" name="time" placeholder="Time" value="${appoinment.ap_time}">
                       </div>
+                      
                       <div class="form-group">
-                        <label for="consultant">Consultant</label>
-                        <input type="text" class="form-control" id="consultant" name="consultant" placeholder="Date" value="${appoinment.consultant_id}">
-                      </div>
+					    <label for="exampleFormControlSelect1">Consultants</label>
+					    <select class="form-control form-control-lg" id="exampleFormControlSelect1" name="consultant">
+					        <c:forEach items="${appoinment.consultants}" var="consultant">
+					            <option value="${consultant}">${consultant}</option>
+					        </c:forEach>
+					    </select>
+					</div>
+                    
+                      
                       <div class="form-group">
                         <label for="Country">Country</label>
                         <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="${appoinment.country}">
@@ -65,7 +74,7 @@ if (request.getSession(false).getAttribute("User") == null) {
                    
                        <input type="hidden" name="actiontype" value="editAdmin"/>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button class="btn btn-light">Cancel</button>
+                      <button type="reset" class="btn btn-danger">Reset</button>
                     </form>
                   </div>
                 </div>

@@ -144,10 +144,10 @@ public class UsersController extends HttpServlet {
 			
 			try {
 				if(getUserService().editUser(user)) {
-					message = "The product has been successfully updated! Product Code: " + user.getUser_id();
+					message = "The User has been successfully updated! User Code: " + user.getUser_id();
 				}
 				else {
-					message = "Failed to update the product! Product Code: " + user.getUser_id();
+					message = "Failed to update the User! User Code: " + user.getUser_id();
 				}
 			} 
 			catch (ClassNotFoundException | SQLException e) {
@@ -177,10 +177,10 @@ public class UsersController extends HttpServlet {
 			
 			try {
 				if(getUserService().editUser(user)) {
-					message = "The product has been successfully updated! Product Code: " + user.getUser_id();
+					message = "The User has been successfully updated! User Code: " + user.getUser_id();
 				}
 				else {
-					message = "Failed to update the product! Product Code: " + user.getUser_id();
+					message = "Failed to update the User! User Code: " + user.getUser_id();
 				}
 			} 
 			catch (ClassNotFoundException | SQLException e) {
@@ -202,10 +202,10 @@ public class UsersController extends HttpServlet {
 		
 		try {
 			if(getUserService().deleteUser(userId)) {
-				message = "The product has been successfully deleted. ProductCode: " + userId;
+				message = "The User has been successfully deleted. UserCode: " + userId;
 			}
 			else {
-				message = "Failed to delet the product! ProductCode: " + userId;
+				message = "Failed to delet the User! UserCode: " + userId;
 			}
 		} 
 		catch (ClassNotFoundException | SQLException e) {
@@ -217,7 +217,7 @@ public class UsersController extends HttpServlet {
 		//rd.forward(request, response);
 		
 		HttpSession session = request.getSession();
-		session.setAttribute("message", message);
+		session.setAttribute("usermessage", message);
 		
 		response.sendRedirect("register?actiontype=user");
 		

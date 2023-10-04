@@ -62,7 +62,7 @@ if (request.getSession(false).getAttribute("User") == null) {
 							<td>${appoinment.user_id}</td>
 							<td>
 							<c:choose>
-                            <c:when test="${appoinment.consultant_id == 0}">
+                            <c:when test="${appoinment.consultant_id == null}">
                             Pending
                             </c:when>
                             <c:otherwise>

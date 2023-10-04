@@ -1,16 +1,22 @@
 package com.online_appoinment_web.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Appoinment {
 	
 	private int ap_id;
 	private String ap_note;
 	private int user_id;
 	private String user_name;
-	private int consultant_id;
+	private String consultant_id;
 	private String ap_date;
 	private String ap_time;
 	private String country;
 	private int status;
+	private String user_phone;
+	private List<String> consultants = new ArrayList<>();
+	
 	
 	
 	public Appoinment() {
@@ -18,7 +24,7 @@ public class Appoinment {
 		
 	}
 
-	public Appoinment(int ap_id, String ap_note, int user_id, int consultant_id, String ap_date, String ap_time, String country, String user_name, int status ) {
+	public Appoinment(int ap_id, String ap_note, int user_id, String consultant_id, String ap_date, String ap_time, String country, String user_name, int status, List<String> consultants, String user_phone) {
 		
 		this.ap_id = ap_id;
 		this.ap_note = ap_note;
@@ -29,6 +35,8 @@ public class Appoinment {
 		this.ap_time = ap_time;
 		this.country = country;
 		this.status = status;
+		this.user_phone = user_phone;
+		this.consultants = consultants;
 		
 	}
 
@@ -56,11 +64,11 @@ public class Appoinment {
 		this.user_id = user_id;
 	}
 
-	public int getConsultant_id() {
+	public String getConsultant_id() {
 		return consultant_id;
 	}
 
-	public void setConsultant_id(int consultant_id) {
+	public void setConsultant_id(String consultant_id) {
 		this.consultant_id = consultant_id;
 	}
 
@@ -104,6 +112,24 @@ public class Appoinment {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	public List<String> getConsultants() {
+		return consultants;
+	}
+
+	public void setConsultants(List<String> consultants) {
+		this.consultants = consultants;
+	}
+
+	public String getUser_phone() {
+		return user_phone;
+	}
+
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
+	}
+	
+	
 	
 	
 	

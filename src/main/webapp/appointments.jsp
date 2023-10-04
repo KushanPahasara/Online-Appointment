@@ -16,18 +16,15 @@ if (request.getSession(false).getAttribute("User") == null) {
     <%
 } 
 %>  
+
 <!DOCTYPE html>
 <html lang="en">
 <%@include file="structure/header.jsp" %>
 <body>
 <div class="container-scroller">
-
   <%@include file="structure/navbar.jsp" %>
-
   <div class="container-fluid page-body-wrapper">
-
     <%@include file="structure/sidebar.jsp" %>
-
     <div class="main-panel">
       <div class="content-wrapper">
         <div class="row purchace-popup">
@@ -35,12 +32,12 @@ if (request.getSession(false).getAttribute("User") == null) {
             <div class="card card-secondary">
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
-                <div class="card-body">
+                  <div class="card-body">
                     <h4 class="card-title">Add New Appointments</h4>
                     <p>${feebackMessage}</p>
                     <p class="card-description"> </p>
-                    <form class="forms-sample" action="appoinment" method="post">
-                     <div class="form-group">
+                    <form class="forms-sample" action="appoinment" method="post" onsubmit="return validateForm();">
+                      <div class="form-group">
                         <label for="Appointment_Description">Appointment Description</label>
                         <textarea class="form-control" id="note" name="note" rows="4"></textarea>
                       </div>
@@ -56,11 +53,9 @@ if (request.getSession(false).getAttribute("User") == null) {
                         <label for="Country">Country</label>
                         <input type="text" class="form-control" id="country" name="country" placeholder="Country">
                       </div>
-                       
-                   
-                       <input type="hidden" name="actiontype" value="add"/>
+                      <input type="hidden" name="actiontype" value="add"/>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button class="btn btn-light">Cancel</button>
+                      <button type="reset" class="btn btn-danger">Reset</button>
                     </form>
                   </div>
                 </div>
@@ -68,11 +63,46 @@ if (request.getSession(false).getAttribute("User") == null) {
             </div>
           </div>
         </div>
+      </div>
+      <%@include file="structure/footer.jsp" %>
     </div>
-    <%@include file="structure/footer.jsp" %>
   </div>
 </div>
-</div>
+
+
 <%@include file="structure/footerLinks.jsp" %>
+
+<script>
+function validateForm() {
+  // Add your validation logic here
+  var note = document.getElementById("note").value;
+  var date = document.getElementById("date").value;
+  var time = document.getElementById("time").value;
+  var country = document.getElementById("country").value;
+
+  if (note.trim() === "") {
+    alert("Please enter Appointment Description");
+    return false;
+  }
+  
+  if (date.trim() === "") {
+    alert("Please select a Date");
+    return false;
+  }
+
+  if (time.trim() === "") {
+    alert("Please select Appointment Time");
+    return false;
+  }
+
+  if (country.trim() === "") {
+    alert("Please enter Country");
+    return false;
+  }
+
+  return true;
+}
+</script>
 </body>
 </html>
+

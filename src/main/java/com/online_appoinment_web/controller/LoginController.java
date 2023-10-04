@@ -58,7 +58,8 @@ public class LoginController extends HttpServlet {
 		try {
 			User user = getLoginService().fetchSingleUser(name);
 			System.out.println(user.getUser_name());
-			if(name.equals(user.getUser_name())&&(password.equals(user.getUser_password()))){
+			System.out.println(user.getUser_email());
+			if(name.equals(user.getUser_email())&&(password.equals(user.getUser_password()))){
 				
 				if( 1 == (user.getUser_role())){
 					HttpSession session = request.getSession();

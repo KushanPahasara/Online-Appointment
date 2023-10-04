@@ -30,7 +30,7 @@ public User fetchSingleUser(String user_name) throws SQLException, ClassNotFound
 	
 	Connection connection = getConnection();
 	
-	String query = "SELECT * FROM user WHERE user_name=?";
+	String query = "SELECT * FROM user WHERE user_email=?";
 	PreparedStatement ps = connection.prepareStatement(query);
 	ps.setString(1, user_name);
 	

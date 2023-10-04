@@ -37,7 +37,7 @@ if (request.getSession(false).getAttribute("User") == null) {
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">List of All Users</h4>
-                      <p>${feebackMessage}</p>
+                     
                     <p class="card-description"> <code></code>
                     </p>
                     <table class="table table-bordered">
@@ -60,7 +60,22 @@ if (request.getSession(false).getAttribute("User") == null) {
 							<td>${user.user_name}</td>
 							<td>${user.user_password}</td>
 							<td>${user.user_email}</td>
-							<td>${user.user_role}</td>
+							
+							<td>
+                            <c:choose>
+                                <c:when test="${user.user_role == '1'}">
+                                    User
+                                </c:when>
+                                <c:when test="${user.user_role == '2'}">
+                                    Admin
+                                </c:when>
+                                <c:when test="${user.user_role == '3'}">
+                                    Consultant
+                                </c:when>
+                                
+                            </c:choose>
+                        </td>
+							                        
 							
 							<td>${user.tel_number}</td>
 							
