@@ -49,9 +49,15 @@ if (request.getSession(false).getAttribute("User") == null) {
                         <th> Note </th>
                         <th> User  </th>
                         <th> Consultant </th>
-                        <th> Date </th>
+                        <th id="dateHeader">
+                        Date
+                       <span id="dateSortIcon" class="fa fa-sort"></span>
+                       </th>
                         <th> Time </th>
-                        <th> Country </th>
+                        <th id="countryHeader">
+                        Country
+                       <span id="countrySortIcon" class="fa fa-sort"></span>
+                      </th>
                         <th> Update </th>
                         <th> Delete </th>
                       </tr>
@@ -94,6 +100,8 @@ if (request.getSession(false).getAttribute("User") == null) {
                      
                       </tbody>
                     </table>
+                  
+                   
                   </div>
                 </div>
               </div>
@@ -106,5 +114,45 @@ if (request.getSession(false).getAttribute("User") == null) {
 </div>
 </div>
 <%@include file="structure/footerLinks.jsp" %>
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dateHeader = document.getElementById("dateHeader");
+        const dateSortIcon = document.getElementById("dateSortIcon");
+        const countryHeader = document.getElementById("countryHeader");
+        const countrySortIcon = document.getElementById("countrySortIcon");
+        let ascendingDateOrder = true;
+        let ascendingCountryOrder = true;
+
+        const sortRows = (header, icon, ascendingOrder, cellIndex) => {
+            const rows = document.querySelectorAll("tbody tr");
+            const sortedRows = Array.from(rows).sort((a, b) => {
+                const cellA = a.cells[cellIndex].textContent;
+                const cellB = b.cells[cellIndex].textContent;
+                return ascendingOrder ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            });
+
+            // Toggle the sorting order for the clicked header
+            if (header === dateHeader) {
+                ascendingDateOrder = !ascendingDateOrder;
+                dateSortIcon.className = ascendingDateOrder ? "fa fa-sort-asc" : "fa fa-sort-desc";
+            } else if (header === countryHeader) {
+                ascendingCountryOrder = !ascendingCountryOrder;
+                countrySortIcon.className = ascendingCountryOrder ? "fa fa-sort-asc" : "fa fa-sort-desc";
+            }
+
+            // Remove existing rows from the table
+            rows.forEach(row => row.remove());
+
+            // Append sorted rows to the table
+            const tbody = document.querySelector("tbody");
+            sortedRows.forEach(row => {
+                tbody.appendChild(row);
+            });
+        };
+
+        dateHeader.addEventListener("click", () => sortRows(dateHeader, dateSortIcon, ascendingDateOrder, 4));
+        countryHeader.addEventListener("click", () => sortRows(countryHeader, countrySortIcon, ascendingCountryOrder, 6));
+    });
+</script>
 </body>
 </html>

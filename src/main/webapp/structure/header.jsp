@@ -18,6 +18,8 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="./css/style.css">
     <!-- End layout styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="./images/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     
   </head>
